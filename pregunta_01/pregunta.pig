@@ -16,4 +16,4 @@ lines = LOAD 'data.tsv' AS (letter:chararray, date:chararray, number:int);
 words = FOREACH lines GENERATE letter as word;
 grouped = GROUP words BY word;
 wordcount= FOREACH grouped GENERATE group, COUNT(words);
-STORE wordcount INTO 'output' USING PigStorage(',');
+STORE wordcount INTO 'output' USING PigStorage(','); 
