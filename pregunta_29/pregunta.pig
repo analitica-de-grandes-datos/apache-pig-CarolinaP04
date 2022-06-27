@@ -33,13 +33,13 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:chararray, color:chararray, number:INT);
+lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:datetime, color:chararray, number:INT);
 fecha = FOREACH lines GENERATE date AS f1;
-f2= FOREACH fecha GENERATE ToDate(f1,'YYYY-MM-DD') AS (date_time: DateTime);
-column = FOREACH f2 GENERATE ToString(date_time, 'YYYY-MM-DD') AS (fecha_completa:chararray) ,ToString(date_time, 'MMM') AS (nombre_mes:chararray), ToString(date_time, 'MM') AS (mes:chararray), ToString(date_time, 'M') AS (month:chararray);
-column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'jan','ene') AS nombre_mes, mes, month;
-column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'apr','abr') AS nombre_mes, mes, month;
-column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'aug','ago') AS nombre_mes, mes, month;
-column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'dec','dic') AS nombre_mes, mes, month;
+f2= FOREACH fecha GENERATE ToDate(f1,'yyyy-MM-dd') AS (date_time: DateTime);
+column = FOREACH f2 GENERATE ToString(date_time, 'yyyy-MM-dd') AS (fecha_completa:chararray), ToString(date_time, 'MMM') AS (nombre_mes:chararray), ToString(date_time, 'MM') AS (mes:chararray), ToString(date_time, 'M') AS (month:chararray);
+column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'Jan','ene') AS nombre_mes, mes, month;
+column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'Apr','abr') AS nombre_mes, mes, month;
+column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'Aug','ago') AS nombre_mes, mes, month;
+column = FOREACH column GENERATE fecha_completa, REPLACE (nombre_mes,'Dec','dic') AS nombre_mes, mes, month;
 column = FOREACH column GENERATE fecha_completa, LOWER(nombre_mes), mes, month;
 STORE column INTO 'output' USING PigStorage(',');
