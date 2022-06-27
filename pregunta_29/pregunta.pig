@@ -33,7 +33,7 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:datetime, color:chararray, number:INT);
+lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:chararray, color:chararray, number:INT);
 fecha = FOREACH lines GENERATE date AS f1;
 f2= FOREACH fecha GENERATE ToDate(f1,'yyyy-MM-dd') AS (date_time: DateTime);
 column = FOREACH f2 GENERATE ToString(date_time, 'yyyy-MM-dd') AS (fecha_completa:chararray), ToString(date_time, 'MMM') AS (nombre_mes:chararray), ToString(date_time, 'MM') AS (mes:chararray), ToString(date_time, 'M') AS (month:chararray);
