@@ -22,4 +22,8 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-
+lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:chararray, color:chararray, number:INT);
+fecha = FOREACH lines GENERATE date AS f1;
+f2= FOREACH fecha GENERATE ToDate(f1,'YYYY-MM-DD') AS (date_time: DateTime);
+anio = FOREACH f2 GENERATE ToString(date_time, 'YYYY') AS (date_strg:chararray) , ToString(date_time, 'YY') AS (date_strg1:chararray);
+STORE anio INTO 'output' USING PigStorage(',');

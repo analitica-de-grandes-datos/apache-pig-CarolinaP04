@@ -13,4 +13,7 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-
+lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:datetime , color:chararray, number:INT);
+result = GROUP lines BY GetYear(date);
+wordcount = FOREACH result GENERATE group, COUNT(lines); 
+STORE wordcount INTO 'output' USING PigStorage(',');
